@@ -1,4 +1,4 @@
-package com.parse.anywall;
+package org.wisepanda.wisewall;
 
 import android.content.Context;
 import android.content.SharedPreferences;

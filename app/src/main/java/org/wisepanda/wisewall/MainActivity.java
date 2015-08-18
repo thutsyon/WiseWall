@@ -1,4 +1,4 @@
-package com.parse.anywall;
+package org.wisepanda.wisewall;
 
 import java.util.HashMap;
 import java.util.HashSet;

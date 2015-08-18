@@ -1,4 +1,4 @@
-package com.parse.anywall;
+package org.wisepanda.wisewall;
 
 import android.app.Activity;
 import android.content.Intent;

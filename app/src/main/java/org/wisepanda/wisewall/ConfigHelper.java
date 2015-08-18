@@ -1,4 +1,4 @@
-package com.parse.anywall;
+package org.wisepanda.wisewall;
 
 import com.parse.ConfigCallback;
 import com.parse.ParseConfig;

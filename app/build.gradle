@@ -2,17 +2,11 @@ apply plugin: 'com.android.application'
 
 android {
     signingConfigs {
-        config {
-            keyAlias 'cth'
-            keyPassword 'Chai19980807'
-            storeFile file('C:/Users/chai/Documents/cth.jks')
-            storePassword 'Chai19980807'
-        }
     }
     compileSdkVersion 22
     buildToolsVersion "22.0.1"
     defaultConfig {
-        applicationId "com.parse.anywall"
+        applicationId 'org.wisepanda.wisewall'
         minSdkVersion 22
         targetSdkVersion 22
     }
@@ -20,10 +14,8 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
-            signingConfig signingConfigs.config
         }
         debug {
-            signingConfig signingConfigs.config
         }
     }
     productFlavors {
