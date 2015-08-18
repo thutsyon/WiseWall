@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Anywall.iml" filepath="$PROJECT_DIR$/Anywall.iml" />
+      <module fileurl="file://$PROJECT_DIR$/WiseWall.iml" filepath="$PROJECT_DIR$/WiseWall.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
