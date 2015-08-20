@@ -73,21 +73,36 @@ public class PostActivity extends Activity {
 
         picButton.setOnClickListener(new OnClickListener() {
             public void onClick(View v) {
-                if (!v.isEnabled()) {
-                    Context context = getApplicationContext();
-                    Toast.makeText(context, "No words are added!", 4).show();
-                } else {
-                    addPic();
-                }
+                Intent picAPictureIntent = new Intent(PostActivity.this, BrowsePicture.class);
+                startActivity(picAPictureIntent);
             }
         });
         updatePostButtonState();
         updateCharacterCountTextViewText();
-    }
-    // Will be the func for add a picture
-    private void addPic () {
+
+      // Add pic button
+      final int SELECT_PICTURE = 1;
+
+      String selectedImagePath;
+      //ADDED
+      String filemanagerstring;
+      findViewById(R.id.pic_button)
+              .setOnClickListener(new View.OnClickListener() {
+
+                  public void onClick(View arg0) {
+
+                      // in onCreate or any event where your want the user to
+                      // select a file
+                      Intent intent = new Intent();
+                      intent.setType("image/*");
+                      intent.setAction(Intent.ACTION_GET_CONTENT);
+                      startActivityForResult(Intent.createChooser(intent,
+                              "Select Picture"), SELECT_PICTURE);
+                  }
+              });
 
     }
+
     private void post () {
     String text = postEditText.getText().toString().trim();
 
