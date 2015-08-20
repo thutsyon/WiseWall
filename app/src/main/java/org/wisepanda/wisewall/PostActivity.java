@@ -2,6 +2,7 @@ package org.wisepanda.wisewall;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.parse.ParseACL;
 import com.parse.ParseException;
@@ -27,6 +29,7 @@ public class PostActivity extends Activity {
   private EditText postEditText;
   private TextView characterCountTextView;
   private Button postButton;
+  private Button picButton;
 
   private int maxCharacterCount = Application.getConfigHelper().getPostMaxCharacterCount();
   private ParseGeoPoint geoPoint;
@@ -58,20 +61,34 @@ public class PostActivity extends Activity {
       }
     });
 
-    characterCountTextView = (TextView) findViewById(R.id.character_count_textview);
+        characterCountTextView = (TextView) findViewById(R.id.character_count_textview);
 
-    postButton = (Button) findViewById(R.id.post_button);
-    postButton.setOnClickListener(new OnClickListener() {
-      public void onClick(View v) {
-        post();
-      }
-    });
+        postButton = (Button) findViewById(R.id.post_button);
+        picButton = (Button) findViewById(R.id.pic_button);
+        postButton.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                post();
+            }
+        });
 
-    updatePostButtonState();
-    updateCharacterCountTextViewText();
-  }
+        picButton.setOnClickListener(new OnClickListener() {
+            public void onClick(View v) {
+                if (!v.isEnabled()) {
+                    Context context = getApplicationContext();
+                    Toast.makeText(context, "No words are added!", 4).show();
+                } else {
+                    addPic();
+                }
+            }
+        });
+        updatePostButtonState();
+        updateCharacterCountTextViewText();
+    }
+    // Will be the func for add a picture
+    private void addPic () {
 
-  private void post () {
+    }
+    private void post () {
     String text = postEditText.getText().toString().trim();
 
     // Set up a progress dialog
@@ -110,6 +127,7 @@ public class PostActivity extends Activity {
     int length = getPostEditTextText().length();
     boolean enabled = length > 0 && length < maxCharacterCount;
     postButton.setEnabled(enabled);
+    picButton.setEnabled(enabled);
   }
 
   private void updateCharacterCountTextViewText () {
