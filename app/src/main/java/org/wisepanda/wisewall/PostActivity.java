@@ -2,10 +2,12 @@ package org.wisepanda.wisewall;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -93,12 +95,31 @@ public class PostActivity extends Activity {
 
                       // in onCreate or any event where your want the user to
                       // select a file
-                      Intent intent = new Intent();
-                      intent.setType("image/*");
-                      intent.setAction(Intent.ACTION_GET_CONTENT);
-                      startActivityForResult(Intent.createChooser(intent,
+                      Intent choosePicIntent = new Intent();
+                      choosePicIntent.setType("image/*");
+                      choosePicIntent.setAction(Intent.ACTION_GET_CONTENT);
+                      startActivityForResult(Intent.createChooser(choosePicIntent,
                               "Select Picture"), SELECT_PICTURE);
                   }
+                  protected void onActivityResult(int requestCode, int resultCode, Intent choosePicIntent) {
+                      if (requestCode == SELECT_PICTURE) {
+                          // Make sure the request was successful
+                          if (resultCode == RESULT_OK) {
+                              Uri selectedImageUri = choosePicIntent.getData();
+                              String[] projection = {MediaStore.Images.Media.DATA};
+                              Cursor cursor = managedQuery(selectedImageUri, projection, null, null, null);
+                              if (cursor != null) {
+                                  //HERE YOU WILL GET A NULLPOINTER IF CURSOR IS NULL
+                                  //THIS CAN BE, IF YOU USED OI FILE MANAGER FOR PICKING THE MEDIA
+                                  int column_index = cursor
+                                          .getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                                  cursor.moveToFirst();
+
+                              }
+                          }
+                      }
+                  }
+
               });
 
     }

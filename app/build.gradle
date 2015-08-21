@@ -9,6 +9,7 @@ android {
         applicationId 'org.wisepanda.wisewall'
         minSdkVersion 19
         targetSdkVersion 22
+        versionName 'b'
     }
     buildTypes {
         release {
