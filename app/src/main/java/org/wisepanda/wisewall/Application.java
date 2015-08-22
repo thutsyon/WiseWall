@@ -11,7 +11,7 @@ public class Application extends android.app.Application {
   public static final boolean APPDEBUG = false;
 
   // Debugging tag for the application
-  public static final String APPTAG = "AnyWall";
+  public static final String APPTAG = "WiseWall";
 
   // Used to pass location from MainActivity to PostActivity
   public static final String INTENT_EXTRA_LOCATION = "location";

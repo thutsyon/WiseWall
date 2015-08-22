@@ -52,6 +52,7 @@ import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseQuery;
 import com.parse.ParseQueryAdapter;
+import com.parse.ParseUser;
 
 public class MainActivity extends FragmentActivity implements LocationListener,
     GoogleApiClient.ConnectionCallbacks,
@@ -393,7 +394,7 @@ public class MainActivity extends FragmentActivity implements LocationListener,
    */
   public void onConnected(Bundle bundle) {
     if (Application.APPDEBUG) {
-      Log.d("Connected to location services", Application.APPTAG);
+      Log.d("Connected location", Application.APPTAG);
     }
     currentLocation = getLocation();
     startPeriodicUpdates();
@@ -404,7 +405,7 @@ public class MainActivity extends FragmentActivity implements LocationListener,
    */
   public void onDisconnected() {
     if (Application.APPDEBUG) {
-      Log.d("Disconnected from location services", Application.APPTAG);
+      Log.d("Disconnected location", Application.APPTAG);
     }
   }
 
@@ -467,7 +468,7 @@ public class MainActivity extends FragmentActivity implements LocationListener,
    */
   private void startPeriodicUpdates() {
     LocationServices.FusedLocationApi.requestLocationUpdates(
-        locationClient, locationRequest, this);
+            locationClient, locationRequest, this);
   }
 
   /*
@@ -552,9 +553,12 @@ public class MainActivity extends FragmentActivity implements LocationListener,
           MarkerOptions markerOpts =
               new MarkerOptions().position(new LatLng(post.getLocation().getLatitude(), post
                   .getLocation().getLongitude()));
+
+          boolean postFlag = (post.getLocation().distanceInKilometersTo(myPoint) > radius * METERS_PER_FEET / METERS_PER_KILOMETER) &&
+                  !(post.getUser().getUsername().equals(ParseUser.getCurrentUser().getUsername()));
+          Log.d(Application.APPTAG, post.getObjectId() + Boolean.toString(postFlag));
           // Set up the marker properties based on if it is within the search radius
-          if (post.getLocation().distanceInKilometersTo(myPoint) > radius * METERS_PER_FEET
-              / METERS_PER_KILOMETER) {
+          if ( postFlag ) {
             // Check for an existing out of range marker
             if (oldMarker != null) {
               if (oldMarker.getSnippet() == null) {
@@ -567,8 +571,8 @@ public class MainActivity extends FragmentActivity implements LocationListener,
             }
             // Display a red marker with a predefined title and no snippet
             markerOpts =
-                markerOpts.title(getResources().getString(R.string.post_out_of_range)).icon(
-                    BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+                markerOpts.title(getResources().getString(R.string.post_out_of_range)).snippet(" ID: " + post.getObjectId()).icon(
+                        BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
           } else {
             // Check for an existing in range marker
             if (oldMarker != null) {
@@ -582,8 +586,8 @@ public class MainActivity extends FragmentActivity implements LocationListener,
             }
             // Display a green marker with the post information
             markerOpts =
-                markerOpts.title(post.getText()).snippet(post.getUser().getUsername())
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+                markerOpts.title(post.getText()).snippet(" ID: " + post.getObjectId() + " User: " + post.getUser().getUsername())
+                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
           }
           // Add a new marker
           Marker marker = mapFragment.getMap().addMarker(markerOpts);

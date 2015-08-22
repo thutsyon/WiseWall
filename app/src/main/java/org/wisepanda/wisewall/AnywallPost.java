@@ -1,10 +1,13 @@
 package org.wisepanda.wisewall;
 
 import com.parse.ParseClassName;
+import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+
+import java.io.File;
 
 /**
  * Data model for a post.
@@ -33,6 +36,14 @@ public class AnywallPost extends ParseObject {
 
   public void setLocation(ParseGeoPoint value) {
     put("location", value);
+  }
+
+  public ParseFile getImage() {
+    return getParseFile("image");
+  }
+
+  public void setImage(ParseFile value) {
+    put("image", value);
   }
 
   public static ParseQuery<AnywallPost> getQuery() {
