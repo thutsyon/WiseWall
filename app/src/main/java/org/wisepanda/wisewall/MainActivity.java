@@ -554,11 +554,10 @@ public class MainActivity extends FragmentActivity implements LocationListener,
               new MarkerOptions().position(new LatLng(post.getLocation().getLatitude(), post
                   .getLocation().getLongitude()));
 
-          boolean postFlag = (post.getLocation().distanceInKilometersTo(myPoint) > radius * METERS_PER_FEET / METERS_PER_KILOMETER) &&
-                  !(post.getUser().getUsername().equals(ParseUser.getCurrentUser().getUsername()));
-          Log.d(Application.APPTAG, post.getObjectId() + Boolean.toString(postFlag));
+          boolean postLocationFlag = post.getLocation().distanceInKilometersTo(myPoint) > radius * METERS_PER_FEET / METERS_PER_KILOMETER;
+          boolean postUserFlag = !(post.getUser().getUsername().equals(ParseUser.getCurrentUser().getUsername()));
           // Set up the marker properties based on if it is within the search radius
-          if ( postFlag ) {
+          if ( postLocationFlag && postUserFlag ) {
             // Check for an existing out of range marker
             if (oldMarker != null) {
               if (oldMarker.getSnippet() == null) {
@@ -585,9 +584,15 @@ public class MainActivity extends FragmentActivity implements LocationListener,
               }
             }
             // Display a green marker with the post information
-            markerOpts =
-                markerOpts.title(post.getText()).snippet(" ID: " + post.getObjectId() + " User: " + post.getUser().getUsername())
-                    .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
+            if (postUserFlag) {
+              markerOpts =
+                      markerOpts.title(post.getText()).snippet(" ID: " + post.getObjectId() + " User: " + post.getUser().getUsername())
+                              .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
+            } else {
+              markerOpts =
+                      markerOpts.title(post.getText()).snippet(" ID: " + post.getObjectId() + " User: " + post.getUser().getUsername())
+                              .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
+            }
           }
           // Add a new marker
           Marker marker = mapFragment.getMap().addMarker(markerOpts);
