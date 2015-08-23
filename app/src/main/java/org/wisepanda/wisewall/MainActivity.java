@@ -569,7 +569,7 @@ public class MainActivity extends FragmentActivity implements LocationListener,
                 oldMarker.remove();
               }
             }
-            // Display a red marker with a predefined title and no snippet
+            // Display a red marker with a predefined title and with post IDs.
             markerOpts =
                 markerOpts.title(getResources().getString(R.string.post_out_of_range)).snippet(" ID: " + post.getObjectId()).icon(
                         BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
