@@ -8,6 +8,7 @@ import java.util.Set;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.res.Configuration;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.graphics.Color;
@@ -20,8 +21,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MenuItem.OnMenuItemClickListener;
 import android.view.View;
+import android.view.Display;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
@@ -57,13 +60,11 @@ import com.parse.ParseUser;
 public class MainActivity extends FragmentActivity implements LocationListener,
     GoogleApiClient.ConnectionCallbacks,
     GoogleApiClient.OnConnectionFailedListener {
-
   /*
    * Define a request code to send to Google Play services This code is returned in
    * Activity.onActivityResult
    */
   private final static int CONNECTION_FAILURE_RESOLUTION_REQUEST = 9000;
-
   /*
    * Constants for location update parameters
    */
@@ -141,6 +142,8 @@ public class MainActivity extends FragmentActivity implements LocationListener,
     radius = Application.getSearchDistance();
     lastRadius = radius;
     setContentView(R.layout.activity_main);
+    ListView postsListView = (ListView) findViewById(R.id.posts_listview);
+    registerForContextMenu(postsListView);
 
     // Create a new global location parameters object
     locationRequest = LocationRequest.create();
@@ -198,7 +201,6 @@ public class MainActivity extends FragmentActivity implements LocationListener,
     postsQueryAdapter.setPaginationEnabled(false);
 
     // Attach the query adapter to the view
-    ListView postsListView = (ListView) findViewById(R.id.posts_listview);
     postsListView.setAdapter(postsQueryAdapter);
 
     // Set up the handler for an item's selection
@@ -207,24 +209,26 @@ public class MainActivity extends FragmentActivity implements LocationListener,
         final AnywallPost item = postsQueryAdapter.getItem(position);
         selectedPostObjectId = item.getObjectId();
         mapFragment.getMap().animateCamera(
-            CameraUpdateFactory.newLatLng(new LatLng(item.getLocation().getLatitude(), item
-                .getLocation().getLongitude())), new CancelableCallback() {
-              public void onFinish() {
-                Marker marker = mapMarkers.get(item.getObjectId());
-                if (marker != null) {
-                  marker.showInfoWindow();
-                }
-              }
+                CameraUpdateFactory.newLatLng(new LatLng(item.getLocation().getLatitude(), item
+                        .getLocation().getLongitude())), new CancelableCallback() {
+                  public void onFinish() {
+                    Marker marker = mapMarkers.get(item.getObjectId());
+                    if (marker != null) {
+                      marker.showInfoWindow();
+                    }
+                  }
 
-              public void onCancel() {
-              }
-            });
+                  public void onCancel() {
+                  }
+                });
         Marker marker = mapMarkers.get(item.getObjectId());
         if (marker != null) {
           marker.showInfoWindow();
         }
       }
     });
+
+
 
     // Set up the map fragment
     mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map_fragment);
@@ -494,12 +498,14 @@ public class MainActivity extends FragmentActivity implements LocationListener,
   /*
    * Set up a query to update the list view
    */
+
   private void doListQuery() {
     Location myLoc = (currentLocation == null) ? lastLocation : currentLocation;
     // If location info is available, load the data
     if (myLoc != null) {
       // Refreshes the list view with new data based
       // usually on updated location data.
+
       postsQueryAdapter.loadObjects();
     }
   }
@@ -586,11 +592,11 @@ public class MainActivity extends FragmentActivity implements LocationListener,
             // Display a green marker with the post information
             if (postUserFlag) {
               markerOpts =
-                      markerOpts.title(post.getText()).snippet(" ID: " + post.getObjectId() + " User: " + post.getUser().getUsername())
+                      markerOpts.title(post.getText()).snippet(" User: " + post.getUser().getUsername())
                               .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_CYAN));
             } else {
               markerOpts =
-                      markerOpts.title(post.getText()).snippet(" ID: " + post.getObjectId() + " User: " + post.getUser().getUsername())
+                      markerOpts.title(post.getText()).snippet(" User: " + post.getUser().getUsername())
                               .icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_GREEN));
             }
           }
@@ -798,5 +804,10 @@ public class MainActivity extends FragmentActivity implements LocationListener,
     public Dialog onCreateDialog(Bundle savedInstanceState) {
       return mDialog;
     }
+
   }
 }
+
+
+
+

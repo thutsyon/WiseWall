@@ -46,6 +46,14 @@ public class AnywallPost extends ParseObject {
     put("image", value);
   }
 
+  public String getPostParent() {
+    return getString("parent");
+  }
+
+  public void setParent(String value) {
+    put("parent", value);
+  }
+
   public static ParseQuery<AnywallPost> getQuery() {
     return ParseQuery.getQuery(AnywallPost.class);
   }
