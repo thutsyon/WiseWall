@@ -22,6 +22,7 @@
         android:paddingTop="@dimen/activity_vertical_margin"
         android:orientation="horizontal" >
 
+
         <fragment
             android:id="@+id/map_fragment"
             android:name="com.google.android.gms.maps.SupportMapFragment"

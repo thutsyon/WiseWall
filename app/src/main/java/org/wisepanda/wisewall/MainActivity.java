@@ -8,6 +8,7 @@ import java.util.Set;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.content.Intent;
 import android.content.IntentSender;
@@ -135,6 +136,8 @@ public class MainActivity extends FragmentActivity implements LocationListener,
 
   // Adapter for the Parse query
   private ParseQueryAdapter<AnywallPost> postsQueryAdapter;
+
+
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
